@@ -90,4 +90,37 @@ suspeitosRoutes.post("/", (req, res) => {
 });
 
 
+
+suspeitosRoutes.put("/:id", (req, res) => {
+  const { id } = req.params;
+  const { nome, profissao, apostas, suspeita } = req.body;
+
+  const suspeito = suspeitos.find((suspects) => suspects.id == id);
+
+  // Verifica se o candidato foi encontrado
+  if (!suspeito) {
+    return res
+      .status(404)
+      .json({ message: `Suspeito com id ${id} não encontrado!` });
+  }
+
+  // Validação dos campos nome e partido
+  if (suspeita != "Baixo" && suspeita != "Médio" && suspeita != "Alto") {
+    return res.status(400).send({
+      message:
+        "O suspeito não tem nenhum nível de suspeito!",
+    });
+  }
+
+  suspeito.nome = nome;
+  suspeito.profissao = profissao;
+  suspeito.apostas = apostas;
+  suspeito.suspeita = suspeita;
+
+  return res.status(200).json({
+    message: "Suspeito atualizado com sucesso!",
+    suspeito,
+  });
+});
+
 export default suspeitosRoutes;
