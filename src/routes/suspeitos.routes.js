@@ -2,7 +2,6 @@ import { Router } from "express";
 
 const suspeitosRoutes = Router();
 
-// Array com candidatos pré-cadastrados
 let suspeitos = [
   {
     id: Math.floor(Math.random() * 1000000),
@@ -34,9 +33,27 @@ let suspeitos = [
   },
 ];
 
-// Rota para listar todos os candidatos
 suspeitosRoutes.get("/", (req, res) => {
   return res.status(200).json(suspeitos);
 });
+
+suspeitosRoutes.get("/:id ", (req, res) => {
+  return res.send(200).json(suspeitos);
+});
+
+suspeitosRoutes.get("/:id", (req, res) => {
+  const { id } = req.params;
+
+  const suspeito = suspeitos.find((suspects) => suspects.id == id);
+
+  if (!suspeito) {
+    return res
+      .status(404)
+      .json({ message: `Suspeito com id ${id} não encontrado!` });
+  }
+
+  return res.status(200).json(suspeito);
+});
+
 
 export default suspeitosRoutes;
