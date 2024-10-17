@@ -55,5 +55,39 @@ suspeitosRoutes.get("/:id", (req, res) => {
   return res.status(200).json(suspeito);
 });
 
+suspeitosRoutes.post("/", (req, res) => {
+
+  const {
+      nome,
+      profissao,
+      apostas,
+      suspeita
+  } = req.body;
+
+  if (!nome) {
+      return res.status(400).send({ message: "Coloque um nome para o suspeito" })
+  }
+
+  if (!profissao) {
+      return res.status(400).send({ message: "Coloque uma profissão" })
+  }
+
+  if (suspeita == "") {
+      return res.status(400).send({ message: "Coloque o nivel de suspeita" })
+  }
+
+
+  const novoSuspeito = {
+      id: Math.floor(Math.random() * 1000),
+      nome,
+      profissao,
+      apostas,
+      suspeita
+  }
+
+  suspeitos.push(novoSuspeito)
+  return res.status(201).send("Suspeito criado com sucesso")
+});
+
 
 export default suspeitosRoutes;
